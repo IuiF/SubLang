@@ -15,7 +15,8 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.VERSION, clientSideOnly = true)
+@Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.VERSION, clientSideOnly = true,
+        guiFactory = "dev.iuif.sublang.forge.SubLangGuiFactory")
 public class SubLangModForge {
 
     @Mod.EventHandler
