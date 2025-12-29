@@ -135,7 +135,7 @@ public class LanguageManager {
     public static String getCurrentLanguage() {
         Minecraft mc = Minecraft.getInstance();
         if (mc != null && mc.getLanguageManager() != null) {
-            return mc.getLanguageManager().getSelected();
+            return mc.getLanguageManager().getSelected().getCode();
         }
         return "en_us";
     }
