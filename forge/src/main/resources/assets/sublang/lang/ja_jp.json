@@ -1,0 +1,9 @@
+{
+  "config.sublang.title": "SubLang 設定",
+  "config.sublang.enabled": "SubLangを有効化",
+  "config.sublang.enabled.tooltip": "バイリンガルアイテム名表示を有効にする",
+  "config.sublang.sourceLanguage": "ソース言語",
+  "config.sublang.sourceLanguage.tooltip": "二次名として表示する言語コード（例: en_us, ja_jp）",
+  "config.sublang.format": "表示形式",
+  "config.sublang.format.tooltip": "フォーマット文字列: %s = 現在の名前, %s = ソース名"
+}
