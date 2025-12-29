@@ -6,7 +6,7 @@ import com.google.gson.JsonParser;
 import dev.iuif.sublang.Constants;
 import dev.iuif.sublang.config.SubLangConfig;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 
@@ -84,7 +84,7 @@ public class LanguageManager {
 
         // Iterate over all namespaces
         for (String namespace : resourceManager.getNamespaces()) {
-            Identifier langFile = Identifier.fromNamespaceAndPath(
+            ResourceLocation langFile = ResourceLocation.fromNamespaceAndPath(
                     namespace, "lang/" + languageCode + ".json");
 
             try {
