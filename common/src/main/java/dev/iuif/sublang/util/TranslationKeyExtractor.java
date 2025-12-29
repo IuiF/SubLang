@@ -2,7 +2,7 @@ package dev.iuif.sublang.util;
 
 import dev.iuif.sublang.config.SubLangConfig;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 public class TranslationKeyExtractor {
@@ -23,7 +23,7 @@ public class TranslationKeyExtractor {
      * Get the item ID (namespace:path) from an ItemStack
      */
     public static String getItemId(ItemStack stack) {
-        Identifier key = BuiltInRegistries.ITEM.getKey(stack.getItem());
+        ResourceLocation key = BuiltInRegistries.ITEM.getKey(stack.getItem());
         return key != null ? key.toString() : "";
     }
 
@@ -31,7 +31,7 @@ public class TranslationKeyExtractor {
      * Get the namespace from an ItemStack
      */
     public static String getNamespace(ItemStack stack) {
-        Identifier key = BuiltInRegistries.ITEM.getKey(stack.getItem());
+        ResourceLocation key = BuiltInRegistries.ITEM.getKey(stack.getItem());
         return key != null ? key.getNamespace() : "minecraft";
     }
 

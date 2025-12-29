@@ -2,16 +2,19 @@ package dev.iuif.sublang.mixin;
 
 import dev.iuif.sublang.config.SubLangConfig;
 import dev.iuif.sublang.core.NameFormatter;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin {
+
+    @Shadow
+    public abstract boolean hasCustomHoverName();
 
     /**
      * Inject at the return of getHoverName to append source language translation
@@ -26,7 +29,7 @@ public abstract class ItemStackMixin {
         ItemStack self = (ItemStack) (Object) this;
 
         // Skip items with custom names (renamed in anvil)
-        if (self.has(DataComponents.CUSTOM_NAME)) {
+        if (hasCustomHoverName()) {
             return;
         }
 
