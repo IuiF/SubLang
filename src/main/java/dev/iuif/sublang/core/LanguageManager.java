@@ -6,17 +6,19 @@ import com.google.gson.JsonParser;
 import dev.iuif.sublang.Constants;
 import dev.iuif.sublang.config.SubLangConfig;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.IResource;
-import net.minecraft.resources.IResourceManager;
+import net.minecraft.client.resources.IResource;
+import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class LanguageManager {
@@ -76,24 +78,41 @@ public class LanguageManager {
      * Load language files from resource manager
      */
     private static void loadLanguageFromResources(String languageCode, Map<String, String> target) {
-        Minecraft mc = Minecraft.getInstance();
+        Minecraft mc = Minecraft.getMinecraft();
         if (mc == null) return;
 
         IResourceManager resourceManager = mc.getResourceManager();
         if (resourceManager == null) return;
 
-        // Iterate over all namespaces
-        for (String namespace : resourceManager.getNamespaces()) {
-            ResourceLocation langFile = new ResourceLocation(
-                    namespace, "lang/" + languageCode + ".json");
+        Set<String> namespaces = resourceManager.getResourceDomains();
 
+        for (String namespace : namespaces) {
+            // Try JSON format first (1.13+ style)
+            ResourceLocation jsonLangFile = new ResourceLocation(
+                    namespace, "lang/" + languageCode + ".json");
             try {
-                Collection<IResource> resources = resourceManager.getResources(langFile);
+                List<IResource> resources = resourceManager.getAllResources(jsonLangFile);
                 for (IResource resource : resources) {
                     try (InputStream stream = resource.getInputStream()) {
                         loadFromJson(stream, target);
                     } catch (IOException e) {
-                        Constants.LOG.debug("Failed to read language file: {}", langFile);
+                        Constants.LOG.debug("Failed to read JSON language file: {}", jsonLangFile);
+                    }
+                }
+            } catch (Exception e) {
+                // JSON file doesn't exist, try .lang format
+            }
+
+            // Try .lang format (1.12.2 style)
+            ResourceLocation langFile = new ResourceLocation(
+                    namespace, "lang/" + languageCode + ".lang");
+            try {
+                List<IResource> resources = resourceManager.getAllResources(langFile);
+                for (IResource resource : resources) {
+                    try (InputStream stream = resource.getInputStream()) {
+                        loadFromLang(stream, target);
+                    } catch (IOException e) {
+                        Constants.LOG.debug("Failed to read .lang file: {}", langFile);
                     }
                 }
             } catch (Exception e) {
@@ -121,6 +140,29 @@ public class LanguageManager {
     }
 
     /**
+     * Parse .lang format file (key=value format) and add entries to target map
+     */
+    private static void loadFromLang(InputStream stream, Map<String, String> target) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty() || line.startsWith("#")) {
+                    continue;
+                }
+                int idx = line.indexOf('=');
+                if (idx > 0) {
+                    String key = line.substring(0, idx);
+                    String value = line.substring(idx + 1);
+                    target.put(key, value);
+                }
+            }
+        } catch (Exception e) {
+            Constants.LOG.debug("Failed to parse .lang file", e);
+        }
+    }
+
+    /**
      * Invalidate all caches (called on resource reload)
      */
     public static void invalidateCache() {
@@ -133,9 +175,9 @@ public class LanguageManager {
      * Get the current game language code
      */
     public static String getCurrentLanguage() {
-        Minecraft mc = Minecraft.getInstance();
+        Minecraft mc = Minecraft.getMinecraft();
         if (mc != null && mc.getLanguageManager() != null) {
-            return mc.getLanguageManager().getSelected().getCode();
+            return mc.getLanguageManager().getCurrentLanguage().getLanguageCode();
         }
         return "en_us";
     }

@@ -1,0 +1,7 @@
+config.sublang.title=SubLang Settings
+config.sublang.enabled=Enable SubLang
+config.sublang.enabled.tooltip=Enable bilingual item name display
+config.sublang.sourceLanguage=Source Language
+config.sublang.sourceLanguage.tooltip=Language code to show as secondary name (e.g., en_us, ja_jp)
+config.sublang.format=Display Format
+config.sublang.format.tooltip=Format string: %s = current name, %s = source name

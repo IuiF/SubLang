@@ -3,7 +3,7 @@ package dev.iuif.sublang.config;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.iuif.sublang.Constants;
-import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.fml.common.Loader;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -72,7 +72,7 @@ public class SubLangConfig {
     }
 
     private static Path getConfigPath() {
-        return FMLPaths.CONFIGDIR.get().resolve(Constants.MOD_ID + ".json");
+        return Loader.instance().getConfigDir().toPath().resolve(Constants.MOD_ID + ".json");
     }
 
     // Getters
