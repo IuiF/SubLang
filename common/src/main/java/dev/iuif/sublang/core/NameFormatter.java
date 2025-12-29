@@ -5,6 +5,7 @@ import dev.iuif.sublang.util.TranslationKeyExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.ItemStack;
 
 public class NameFormatter {
@@ -60,7 +61,7 @@ public class NameFormatter {
 
         // Preserve original styling
         Style style = currentName.getStyle();
-        MutableComponent result = Component.literal(formatted);
+        MutableComponent result = new TextComponent(formatted);
 
         if (style != null && !style.equals(Style.EMPTY)) {
             result = result.withStyle(style);
@@ -74,11 +75,11 @@ public class NameFormatter {
      * Alternative formatting that preserves original style and adds styled source
      */
     public static Component formatWithStyledSource(Component currentName, String sourceTranslation) {
-        MutableComponent result = Component.empty();
+        MutableComponent result = TextComponent.EMPTY.copy();
         result.append(currentName);
-        result.append(Component.literal(" ("));
-        result.append(Component.literal(sourceTranslation).withStyle(style -> style.withColor(0x888888)));
-        result.append(Component.literal(")"));
+        result.append(new TextComponent(" ("));
+        result.append(new TextComponent(sourceTranslation).withStyle(style -> style.withColor(0x888888)));
+        result.append(new TextComponent(")"));
         return result;
     }
 }
