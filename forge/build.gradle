@@ -62,12 +62,19 @@ repositories {
         name = 'BlameJared'
         url = 'https://maven.blamejared.com'
     }
+    maven {
+        name = 'Shedaniel'
+        url = 'https://maven.shedaniel.me/'
+    }
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
+    // Cloth Config for config screen
+    implementation fg.deobf("me.shedaniel.cloth:cloth-config-forge:4.14.64")
 }
 
 processResources {

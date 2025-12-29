@@ -7,6 +7,8 @@ import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ExtensionPoint;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -17,6 +19,12 @@ public class SubLangModForge {
     public SubLangModForge() {
         Constants.LOG.info("SubLang mod initializing (Forge)");
         SubLangConfig.load();
+
+        // Register config screen
+        ModLoadingContext.get().registerExtensionPoint(
+                ExtensionPoint.CONFIGGUIFACTORY,
+                () -> (mc, parent) -> SubLangConfigScreen.create(parent)
+        );
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onClientSetup);
         MinecraftForge.EVENT_BUS.register(this);
