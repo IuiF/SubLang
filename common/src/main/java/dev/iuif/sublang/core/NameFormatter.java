@@ -61,8 +61,20 @@ public class NameFormatter {
         String format = SubLangConfig.getFormat();
         String current = currentName.getString();
 
-        // Apply format
-        String formatted = String.format(format, current, sourceTranslation);
+        // Apply format - support both new named placeholders and legacy %s format
+        String formatted;
+        if (format.contains("{current}") || format.contains("{source}")) {
+            // New named placeholder format
+            formatted = format
+                .replace("{current}", current)
+                .replace("{source}", sourceTranslation);
+        } else {
+            // Legacy %s format (backward compatibility)
+            formatted = String.format(format, current, sourceTranslation);
+        }
+
+        // Support newline escape sequence
+        formatted = formatted.replace("\\n", "\n");
 
         // Preserve original styling
         Style style = currentName.getStyle();
