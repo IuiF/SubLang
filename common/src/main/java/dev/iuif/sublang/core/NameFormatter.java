@@ -37,6 +37,12 @@ public class NameFormatter {
 
         // Get source translation
         String sourceTranslation = LanguageManager.getSourceTranslation(translationKey);
+
+        // Skip if no translation found
+        if (sourceTranslation == null) {
+            return currentName;
+        }
+
         String currentTranslation = currentName.getString();
 
         // Skip if same translation and config says not to show
