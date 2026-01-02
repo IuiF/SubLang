@@ -9,7 +9,7 @@
   "config.sublang.sourceLanguageMode.specific": "特定の言語",
   "config.sublang.sourceLanguageMode.key": "翻訳キー",
   "config.sublang.format": "表示フォーマット",
-  "config.sublang.format.tooltip": "バイリンガル表示のフォーマット。 %s = 現在の言語, %s = 元言語",
+  "config.sublang.format.tooltip": "バイリンガル表示のフォーマット。 {current} = 現言語, {source} = 元言語, \\n = 改行",
   "config.sublang.showForSame": "同一翻訳時も表示",
   "config.sublang.showForSame.tooltip": "翻訳が同じ場合でも元言語を表示",
   "config.sublang.category.filter": "フィルタリング",
