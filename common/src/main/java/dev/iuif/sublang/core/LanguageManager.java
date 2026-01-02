@@ -16,6 +16,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -45,7 +46,12 @@ public class LanguageManager {
 
         // Load language data if not cached
         Map<String, String> langData = getLanguageData(sourceLanguage);
-        String translation = langData.getOrDefault(key, key);
+        String translation = langData.get(key);
+
+        // If translation not found, return null (skip display)
+        if (translation == null) {
+            return null;
+        }
 
         // Cache the result
         if (SubLangConfig.isCacheEnabled()) {
@@ -82,22 +88,34 @@ public class LanguageManager {
         ResourceManager resourceManager = mc.getResourceManager();
         if (resourceManager == null) return;
 
-        // Iterate over all namespaces
-        for (String namespace : resourceManager.getNamespaces()) {
-            ResourceLocation langFile = new ResourceLocation(
-                    namespace, "lang/" + languageCode + ".json");
+        String langFileName = "lang/" + languageCode + ".json";
 
+        // Collect all language files from all namespaces (simulating listResources)
+        Map<ResourceLocation, Resource> langFiles = new LinkedHashMap<>();
+        for (String namespace : resourceManager.getNamespaces()) {
+            ResourceLocation location = new ResourceLocation(namespace, langFileName);
             try {
-                Collection<Resource> resources = resourceManager.getResources(langFile);
-                for (Resource resource : resources) {
-                    try (InputStream stream = resource.getInputStream()) {
-                        loadFromJson(stream, target);
-                    } catch (IOException e) {
-                        Constants.LOG.debug("Failed to read language file: {}", langFile);
-                    }
+                Collection<Resource> resources = resourceManager.getResources(location);
+                if (!resources.isEmpty()) {
+                    langFiles.put(location, resources.iterator().next());
                 }
             } catch (Exception e) {
-                // Language file doesn't exist for this namespace - this is normal
+                // Language file doesn't exist for this namespace - normal
+            }
+        }
+
+        Constants.LOG.debug("Found {} language files for {}", langFiles.size(), languageCode);
+
+        // Load all collected language files
+        for (Map.Entry<ResourceLocation, Resource> entry : langFiles.entrySet()) {
+            ResourceLocation location = entry.getKey();
+            Resource resource = entry.getValue();
+
+            try (InputStream stream = resource.getInputStream()) {
+                loadFromJson(stream, target);
+                Constants.LOG.debug("Loaded language file: {}", location);
+            } catch (IOException e) {
+                Constants.LOG.debug("Failed to read language file: {}", location);
             }
         }
     }
