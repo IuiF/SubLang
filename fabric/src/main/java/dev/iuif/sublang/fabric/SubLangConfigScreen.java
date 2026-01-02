@@ -60,7 +60,7 @@ public class SubLangConfigScreen {
         general.addEntry(entryBuilder.startStrField(
                         new TranslatableComponent("config.sublang.format"),
                         config.format)
-                .setDefaultValue("%s (%s)")
+                .setDefaultValue("{current} ({source})")
                 .setTooltip(new TranslatableComponent("config.sublang.format.tooltip"))
                 .setSaveConsumer(val -> config.format = val)
                 .build());

@@ -9,7 +9,7 @@
   "config.sublang.sourceLanguageMode.specific": "Specific Language",
   "config.sublang.sourceLanguageMode.key": "Translation Key",
   "config.sublang.format": "Display Format",
-  "config.sublang.format.tooltip": "Format string for bilingual display. %s = current, %s = source",
+  "config.sublang.format.tooltip": "Format string for bilingual display. {current} = current language, {source} = source language, \\n = newline",
   "config.sublang.showForSame": "Show for Same Translation",
   "config.sublang.showForSame.tooltip": "Show source language even when translation is the same",
   "config.sublang.category.filter": "Filtering",
