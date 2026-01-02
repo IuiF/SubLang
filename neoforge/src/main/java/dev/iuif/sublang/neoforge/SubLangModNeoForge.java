@@ -6,7 +6,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.neoforged.neoforge.client.ConfigScreenHandler;
 
 @Mod(Constants.MOD_ID)
 public class SubLangModNeoForge {
@@ -15,8 +15,8 @@ public class SubLangModNeoForge {
         Constants.LOG.info("SubLang NeoForge initializing!");
 
         // Register config screen
-        modContainer.registerExtensionPoint(IConfigScreenFactory.class,
-                (mc, parent) -> SubLangConfigScreen.create(parent));
+        modContainer.registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class,
+                () -> new ConfigScreenHandler.ConfigScreenFactory((mc, parent) -> SubLangConfigScreen.create(parent)));
 
         // Register client setup
         modEventBus.addListener(this::onClientSetup);
