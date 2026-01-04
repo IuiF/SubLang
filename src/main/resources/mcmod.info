@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "sublang",
+    "name": "SubLang",
+    "description": "Display item names in bilingual format (TranslatedName (OriginalName)) for easier JEI searching.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": ["iuif"],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
