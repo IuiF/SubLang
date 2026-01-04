@@ -1,6 +1,7 @@
 package dev.iuif.sublang.core;
 
 import dev.iuif.sublang.config.SubLangConfig;
+import dev.iuif.sublang.util.FormatStringProcessor;
 import dev.iuif.sublang.util.TranslationKeyExtractor;
 import net.minecraft.item.ItemStack;
 
@@ -67,22 +68,6 @@ public class NameFormatter {
      */
     public static String formatBilingual(String currentName, String sourceTranslation) {
         String format = SubLangConfig.getFormat();
-
-        // Apply format - support both new named placeholders and legacy %s format
-        String formatted;
-        if (format.contains("{current}") || format.contains("{source}")) {
-            // New named placeholder format
-            formatted = format
-                .replace("{current}", currentName)
-                .replace("{source}", sourceTranslation);
-        } else {
-            // Legacy %s format (backward compatibility)
-            formatted = String.format(format, currentName, sourceTranslation);
-        }
-
-        // Support newline escape sequence
-        formatted = formatted.replace("\\n", "\n");
-
-        return formatted;
+        return FormatStringProcessor.format(format, currentName, sourceTranslation);
     }
 }
