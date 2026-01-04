@@ -25,7 +25,7 @@ public class SubLangConfig {
         public SourceLanguageMode sourceLanguageMode = SourceLanguageMode.SPECIFIC_LANGUAGE;
 
         // Format settings
-        public String format = "%s (%s)";
+        public String format = "{current} ({source})";
         public boolean showForSameTranslation = false;
 
         // Filtering

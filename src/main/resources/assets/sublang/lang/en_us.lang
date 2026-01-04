@@ -7,6 +7,6 @@ config.sublang.sourceLanguageMode.key=Translation Key
 config.sublang.sourceLanguage=Source Language
 config.sublang.sourceLanguage.tooltip=Language code to show as secondary name (e.g., en_us, ja_jp)
 config.sublang.format=Display Format
-config.sublang.format.tooltip=Format string: %s = current name, %s = source name
+config.sublang.format.tooltip=Format string for bilingual display. {current} = current language, {source} = source language, \\n = newline
 config.sublang.showForSame=Show for Same Translation
 config.sublang.showForSame.tooltip=Show source name even when it matches current name

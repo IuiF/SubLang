@@ -48,12 +48,11 @@ public class NameFormatter {
         }
 
         // Format: extract suffix from format string
-        // Default format is "%s (%s)" which means suffix should be " (sourceTranslation)"
+        // Default format is "{current} ({source})" which means suffix should be " (sourceTranslation)"
         String format = SubLangConfig.getFormat();
 
         // Calculate what suffix to add
-        // If format is "%s (%s)", the suffix is " (" + sourceTranslation + ")"
-        String fullFormatted = String.format(format, currentTranslation, sourceTranslation);
+        String fullFormatted = formatBilingual(currentTranslation, sourceTranslation);
         if (fullFormatted.startsWith(currentTranslation)) {
             return fullFormatted.substring(currentTranslation.length());
         }
@@ -68,6 +67,22 @@ public class NameFormatter {
      */
     public static String formatBilingual(String currentName, String sourceTranslation) {
         String format = SubLangConfig.getFormat();
-        return String.format(format, currentName, sourceTranslation);
+
+        // Apply format - support both new named placeholders and legacy %s format
+        String formatted;
+        if (format.contains("{current}") || format.contains("{source}")) {
+            // New named placeholder format
+            formatted = format
+                .replace("{current}", currentName)
+                .replace("{source}", sourceTranslation);
+        } else {
+            // Legacy %s format (backward compatibility)
+            formatted = String.format(format, currentName, sourceTranslation);
+        }
+
+        // Support newline escape sequence
+        formatted = formatted.replace("\\n", "\n");
+
+        return formatted;
     }
 }
