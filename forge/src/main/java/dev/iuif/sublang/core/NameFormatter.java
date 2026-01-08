@@ -3,6 +3,7 @@ package dev.iuif.sublang.core;
 import dev.iuif.sublang.config.SubLangConfig;
 import dev.iuif.sublang.util.FormatStringProcessor;
 import dev.iuif.sublang.util.TranslationKeyExtractor;
+import dev.iuif.sublang.util.TranslationResolver;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -38,10 +39,15 @@ public class NameFormatter {
             return currentName;
         }
 
-        // Get source translation
-        String sourceTranslation = LanguageManager.getSourceTranslation(translationKey);
+        // Get source translation (using TranslationResolver for proper placeholder handling)
+        String sourceTranslation = TranslationResolver.resolveToSourceLanguage(currentName);
 
-        // Skip if no translation found
+        // Fallback to simple key lookup if resolver returns null
+        if (sourceTranslation == null) {
+            sourceTranslation = LanguageManager.getSourceTranslation(translationKey);
+        }
+
+        // Skip if still no translation found
         if (sourceTranslation == null) {
             return currentName;
         }
