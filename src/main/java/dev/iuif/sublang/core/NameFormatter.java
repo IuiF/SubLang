@@ -3,6 +3,7 @@ package dev.iuif.sublang.core;
 import dev.iuif.sublang.config.SubLangConfig;
 import dev.iuif.sublang.util.FormatStringProcessor;
 import dev.iuif.sublang.util.TranslationKeyExtractor;
+import dev.iuif.sublang.util.TranslationResolver;
 import net.minecraft.item.ItemStack;
 
 public class NameFormatter {
@@ -33,10 +34,10 @@ public class NameFormatter {
             return null;
         }
 
-        // Get source translation
-        String sourceTranslation = LanguageManager.getSourceTranslation(translationKey);
+        // Get source translation (using TranslationResolver for proper placeholder handling)
+        String sourceTranslation = TranslationResolver.resolveSourceTranslation(stack, translationKey);
 
-        // Skip if no translation found
+        // Skip if no translation found or could not resolve placeholders
         if (sourceTranslation == null) {
             return null;
         }
